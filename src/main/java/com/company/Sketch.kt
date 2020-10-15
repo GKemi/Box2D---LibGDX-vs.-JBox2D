@@ -1,7 +1,11 @@
 package processing.library.template
 
+import com.company.Circles
+import com.company.SketchBoundary
 import processing.core.PApplet
 import processing.core.PConstants
+import shiffman.box2d.Box2DContactListener
+import shiffman.box2d.Box2DProcessing
 
 object Sketch : PApplet(){
     init {
@@ -10,16 +14,44 @@ object Sketch : PApplet(){
 
     override fun settings() {
         super.settings()
-        size(400, 400, PConstants.P2D)
+        size(1000, 1000, PConstants.P2D)
+        pixelDensity(2)
     }
+
+    lateinit var box2d: Box2DProcessing
+    lateinit var circles: Circles
 
     override fun setup() {
         background(0)
-        rectMode(PConstants.CENTER)
+        setupBox2D()
+        circles = Circles(box2d  = this.box2d)
     }
 
     override fun draw() {
-        rect(width/2f, height/2f, width*0.8f, height*0.8f)
+        background(0)
+
+        box2d.step()
+        if (mousePressed) circles.add(mouseX.toFloat(), mouseY.toFloat())
+
+        displayDebugData()
+        drawCircles()
+    }
+
+    private fun displayDebugData() {
+        stroke(255f)
+        text("Framerate: ${frameRate}", 10f, 10f)
+        text("No. Particles: ${circles.bodies.size}", 10f, 20f)
+    }
+
+    private fun setupBox2D() {
+        box2d = Box2DProcessing(Sketch)
+        box2d.createWorld()
+        box2d.setGravity(0f, -10f)
+        SketchBoundary(box2d)
+    }
+
+    fun drawCircles() {
+        circles.display()
     }
 
 }
