@@ -1,18 +1,16 @@
 package com.company
 
-import org.jbox2d.collision.shapes.CircleShape
-import org.jbox2d.common.Vec2
-import org.jbox2d.dynamics.Body
-import org.jbox2d.dynamics.BodyDef
-import org.jbox2d.dynamics.BodyType
-import org.jbox2d.dynamics.FixtureDef
-import processing.core.PVector
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.physics.box2d.Body
+import com.badlogic.gdx.physics.box2d.BodyDef
+import com.badlogic.gdx.physics.box2d.CircleShape
+import com.badlogic.gdx.physics.box2d.FixtureDef
+import hackemi.box2d.LibGDXBox2DProcessing
 import processing.library.template.Sketch
-import shiffman.box2d.Box2DProcessing
 
 class Circles(var bodies: MutableList<Body> = mutableListOf(),
               var r: Float = 5f,
-              val box2d: Box2DProcessing) {
+              val box2d: LibGDXBox2DProcessing) {
 
     fun add(x: Float, y: Float) {
         val body = createSandParticleBody(x, y, r)
@@ -40,7 +38,7 @@ class Circles(var bodies: MutableList<Body> = mutableListOf(),
         val bd = BodyDef()
 
         bd.position.set(box2d.coordPixelsToWorld(x, y))
-        bd.type = BodyType.DYNAMIC
+        bd.type = BodyDef.BodyType.DynamicBody
         val particleBody = box2d.world.createBody(bd)
 
         // Make the body's shape a circle
@@ -59,7 +57,7 @@ class Circles(var bodies: MutableList<Body> = mutableListOf(),
         var velocityY = 10f
 
         // Give it a random initial velocity (and angular velocity)
-        particleBody.linearVelocity = Vec2(Sketch.random(-10f, 10f), velocityY)
+        particleBody.linearVelocity = Vector2(Sketch.random(-10f, 10f), velocityY)
         particleBody.angularVelocity = Sketch.random(-10f, 10f)
 
         return particleBody

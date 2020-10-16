@@ -2,10 +2,9 @@ package processing.library.template
 
 import com.company.Circles
 import com.company.SketchBoundary
+import hackemi.box2d.LibGDXBox2DProcessing
 import processing.core.PApplet
 import processing.core.PConstants
-import shiffman.box2d.Box2DContactListener
-import shiffman.box2d.Box2DProcessing
 
 object Sketch : PApplet(){
     init {
@@ -18,7 +17,7 @@ object Sketch : PApplet(){
         pixelDensity(2)
     }
 
-    lateinit var box2d: Box2DProcessing
+    lateinit var box2d: LibGDXBox2DProcessing
     lateinit var circles: Circles
 
     override fun setup() {
@@ -44,7 +43,7 @@ object Sketch : PApplet(){
     }
 
     private fun setupBox2D() {
-        box2d = Box2DProcessing(Sketch)
+        box2d = LibGDXBox2DProcessing(this)
         box2d.createWorld()
         box2d.setGravity(0f, -10f)
         SketchBoundary(box2d)
